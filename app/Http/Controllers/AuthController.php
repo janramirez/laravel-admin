@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Cookie;
+use Symfony\Component\HttpFoundation\Cookie as HttpFoundationCookie;
 
 class AuthController extends Controller
 {
@@ -19,14 +21,25 @@ class AuthController extends Controller
 
             $token = $user->createToken('admin')->accessToken;
 
-            return [
+            $cookie = cookie('jwt', $token, 3600);
+
+            return response([
                 'token' => $token,
-            ];
+            ])->withCookie($cookie);
         }
 
         return response([
             'error' => 'Invalid Credentials!'
         ], Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function logout()
+    {
+        $cookie = Cookie::forget('jwt');
+
+        return response([
+            'message' => 'success'
+        ])->withCookie($cookie);
     }
 
     public function register(RegisterRequest $request)
