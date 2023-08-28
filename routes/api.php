@@ -30,7 +30,7 @@ Route::middleware(['auth:api'])->group(function(){
 
     Route::get('chart', [DashboardController::class, 'chart']);
     Route::get('user', [UserController::class, 'user']);
-    Route::get('users/info', [UserController::class, 'updateInfo']);
+    Route::put('users/info', [UserController::class, 'updateInfo']);
     Route::put('users/password', [UserController::class, 'updatePassword']);
     Route::post('upload', [ImageController::class, 'upload']);
     Route::get('export', [OrderController::class, 'export']);
