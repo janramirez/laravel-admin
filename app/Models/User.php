@@ -13,14 +13,14 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $guarded = [ 'id' ];
-    
+
     protected $hidden = [
         'password',
     ];
 
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->hasOneThrough(Role::class, UserRole::class, 'user_id', 'id', 'id', 'role_id');
     }
 
     public function permissions()

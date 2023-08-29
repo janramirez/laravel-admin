@@ -52,7 +52,6 @@ class AuthController
             $request->only('first_name', 'last_name', 'email')
                 + [
                     'password' => Hash::make($request->input('password')),
-                    'role_id' => 1,
                     'is_influencer' => 1
                 ]
         );

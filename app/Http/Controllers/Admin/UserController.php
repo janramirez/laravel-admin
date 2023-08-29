@@ -12,6 +12,7 @@ use Facade\FlareClient\Http\Response;
 use App\Http\Requests\UpdateInfoRequest;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UpdatePasswordRequest;
+use App\Models\UserRole;
 use Illuminate\Support\Facades\Response as FacadesResponse;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
@@ -41,9 +42,14 @@ class UserController
         Gate::authorize('edit', 'users');
 
         $user = User::create(
-            $request->only('first_name', 'last_name', 'email','role_id')
+            $request->only('first_name', 'last_name', 'email')
             + ['password' => Hash::make(1234)]
         );
+
+        UserRole::create([
+            'user_id' => $user->id,
+            'role_id' => $request->input('role_id'),
+        ]);
 
         return response(new UserResource($user), HttpFoundationResponse::HTTP_CREATED);
     }
@@ -55,7 +61,14 @@ class UserController
 
         $user = User::find($id);
 
-        $user->update($request->only('first_name', 'last_name', 'email', 'role_id'));
+        $user->update($request->only('first_name', 'last_name', 'email'));
+
+        UserRole::where('user_id', $user->id)->delete();
+
+        UserRole::create([
+            'user_id' => $user->id,
+            'role_id' => $request->input('role_id'),
+        ]);
 
         return response(new UserResource($user), 202);
     }
