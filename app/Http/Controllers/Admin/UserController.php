@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ use App\Http\Requests\UpdatePasswordRequest;
 use Illuminate\Support\Facades\Response as FacadesResponse;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
-class UserController extends Controller
+class UserController
 {
     public function index() 
     {

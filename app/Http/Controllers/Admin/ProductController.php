@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Product;
 use Illuminate\Support\Str;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProductCreateRequest;
 use Symfony\Component\HttpFoundation\Response;
 
-class ProductController extends Controller
+class ProductController
 {
     public function index()
     {
