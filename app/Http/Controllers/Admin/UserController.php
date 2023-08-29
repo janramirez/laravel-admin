@@ -70,34 +70,4 @@ class UserController
         return response(null, HttpFoundationResponse::HTTP_NO_CONTENT);
     }
 
-    public function user()
-    {
-        $user = Auth::user();
-
-        return (new UserResource($user))->additional([
-            'data' => [
-                'permissions' => $user->permissions()
-            ]
-        ]);
-    }
-
-    public function updateInfo(UpdateInfoRequest $request)
-    {
-        $user = Auth::user();
-
-        $user->update($request->only('first_name', 'last_name', 'email'));
-
-        return response(new UserResource($user), HttpFoundationResponse::HTTP_ACCEPTED);
-    }
-
-    public function updatePassword(UpdatePasswordRequest $request)
-    {
-        $user = Auth::user();
-
-        $user->update([
-            'password'=>Hash::make($request->input('password'))
-        ]);
-
-        return response(new UserResource($user), HttpFoundationResponse::HTTP_ACCEPTED);
-    }
 }
