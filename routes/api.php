@@ -55,6 +55,6 @@ Route::group([
     Route::group([
         'middleware' => ['auth:api', 'scope:influencer'],
     ], function() {
-
+        Route::post('links', 'LinkController@store');
     });
 });
