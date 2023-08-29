@@ -22,8 +22,14 @@ class AuthController
     {
         if (Auth::attempt($request->only('email', 'password'))) {
             $user = Auth::user();
+            $scope = $request->input('scope');
 
-            $token = $user->createToken('admin')->accessToken;
+            if($user->isInfluencer() && $scope !== 'influencer'){
+                return response([
+                    'error' => 'Access denied!',
+                ], Response::HTTP_FORBIDDEN);
+            }
+            $token = $user->createToken($scope, [$scope])->accessToken;
 
             $cookie = cookie('jwt', $token, 3600);
 
