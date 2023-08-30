@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\AdminAddedEvent;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
@@ -50,6 +51,8 @@ class UserController
             'user_id' => $user->id,
             'role_id' => $request->input('role_id'),
         ]);
+
+        event(new AdminAddedEvent($user));
 
         return response(new UserResource($user), HttpFoundationResponse::HTTP_CREATED);
     }
