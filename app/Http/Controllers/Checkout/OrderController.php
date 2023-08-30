@@ -64,11 +64,7 @@ class OrderController
             ];
         }
 
-        try {
-            $stripe = Stripe::make(env('STRIPE_API_KEY'));
-        } catch (\Exception $e) {
-            Log::error("Error creating stripe instance: " . $e->getMessage());
-        };
+        $stripe = Stripe::make(env('STRIPE_API_KEY'));
 
         $source = $stripe->checkout()->sessions()->create([
             'payment_method_types' => ['card'],
@@ -76,6 +72,7 @@ class OrderController
             'success_url' => env('CHECKOUT_URL') . '/success?source={CHECKOUT_SESSION_ID}',
             'cancel_url' => env('CHECKOUT_URL') . '/error'
         ]);
+
 
         $order->transaction_id = $source['id'];
         $order->save();
