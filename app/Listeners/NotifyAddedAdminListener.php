@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Mail;
 
 class NotifyAddedAdminListener
 {
+    /**
+     * Handle the event.
+     *
+     * @param  App\Events\AdminAddedEvent  $event
+     * @return void
+     */
     public function handle(AdminAddedEvent $event)
     {
         $user = $event->user;

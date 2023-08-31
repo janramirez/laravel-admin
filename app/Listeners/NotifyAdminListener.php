@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Mail;
 
 class NotifyAdminListener
 {
+    /**
+     * Handle the event.
+     *
+     * @param  App\Events\OrderCompletedEvent  $event
+     * @return void
+     */
     public function handle(OrderCompletedEvent $event)
     {
         $order = $event->order;
