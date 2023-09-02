@@ -13,6 +13,7 @@ use Facade\FlareClient\Http\Response;
 use App\Http\Requests\UpdateInfoRequest;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UpdatePasswordRequest;
+use App\Jobs\AdminAdded;
 use App\Models\UserRole;
 use Illuminate\Support\Facades\Response as FacadesResponse;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
@@ -52,7 +53,7 @@ class UserController
             'role_id' => $request->input('role_id'),
         ]);
 
-        event(new AdminAddedEvent($user));
+        AdminAdded::dispatch($user->email);
 
         return response(new UserResource($user), HttpFoundationResponse::HTTP_CREATED);
     }
