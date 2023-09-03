@@ -41,13 +41,5 @@ services:
     ports:
       - 6379:6379
 
-  mailcatcher:
-    image: schickling/mailcatcher:latest
-    ports:
-      - 1080:1080
-      - 1025:1025
-    networks:
-      - app
-
 networks:
   app:
