@@ -20,18 +20,8 @@ class CreateUserRolesTable extends Migration
             $table->unsignedBigInteger('user_id')->unique();
             $table->unsignedBigInteger('role_id');
 
-            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('role_id')->references('id')->on('roles');
         });
-
-        $users = User::all();
-
-        foreach($users as $user) {
-            DB::table('user_roles')->insert([
-                'user_id' => $user->id,
-                'role_id' => $user->role_id
-            ]);
-        }
     }
 
     /**

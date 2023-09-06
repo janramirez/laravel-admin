@@ -11,7 +11,7 @@ class DashboardController
 {
     public function chart()
     {
-        Gate::authorize('view', 'orders');
+        // Gate::authorize('view', 'orders');
         
         $orders = Order::query()
          ->join('order_items', 'orders.id', '=', 'order_items.order_id')

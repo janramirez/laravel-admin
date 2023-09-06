@@ -14,7 +14,7 @@ class RoleController
     
     public function index()
     {
-        Gate::authorize('view', 'roles');
+        // Gate::authorize('view', 'roles');
 
         return RoleResource::collection(Role::all());
     }

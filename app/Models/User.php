@@ -2,30 +2,34 @@
 
 namespace App\Models;
 
-use Laravel\Passport\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
-class User extends Authenticatable
+class User
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    public $id;
+    public $first_name;
+    public $last_name;
+    public $email;
+    public $is_influencer;
 
-    protected $guarded = [ 'id' ];
+    public function __construct($json)
+    {
 
-    protected $hidden = [
-        'password',
-    ];
+        $this->id = $json['id'];
+        $this->first_name = $json['first_name'];
+        $this->last_name = $json['last_name'];
+        $this->email = $json['email'];
+        $this->is_influencer = $json['is_influencer'] ?? 0;
+    }
 
     public function role()
     {
-        return $this->hasOneThrough(Role::class, UserRole::class, 'user_id', 'id', 'id', 'role_id');
+        $userRole = UserRole::where('user_id',$this->id)->first();
+
+        return Role::find($userRole->role_id);
     }
 
     public function permissions()
     {
-        return $this->role->permissions->pluck('name');
+        return $this->role()->permissions->pluck('name');
     }
 
     public function hasAccess($access)
@@ -43,7 +47,7 @@ class User extends Authenticatable
         return $this->is_influencer === 1;
     }
 
-    public function getRevenueAttribute()
+    public function revenue()
     {
         $orders = Order::where('user_id', $this->id)->where('complete', 1)->get();
 
@@ -52,7 +56,7 @@ class User extends Authenticatable
         });
     }
 
-    public function getFullNameAttribute()
+    public function fullName()
     {
         return $this->first_name . ' ' . $this->last_name;
     }
