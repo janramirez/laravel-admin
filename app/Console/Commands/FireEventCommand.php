@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\AdminAdded;
-use App\Jobs\OrderCompleted;
-use App\Models\Order;
+use App\Jobs\ProductCreated;
+use App\Models\Product;
 use Illuminate\Console\Command;
 
 class FireEventCommand extends Command
@@ -40,12 +39,8 @@ class FireEventCommand extends Command
      */
     public function handle()
     {
-        $order = Order::find(1);
+        $product = Product::find(1);
 
-        $data = $order->toArray();
-        $data['admin_total'] = $order->admin_total;
-        $data['influencer_total'] = $order->influencer_total;
-
-        OrderCompleted::dispatch($data);
+        ProductCreated::dispatch($product->toArray())->onQueue('checkout_queue');
     }
 }
