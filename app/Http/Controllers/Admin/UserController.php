@@ -86,5 +86,4 @@ class UserController
         
         return response(null, HttpFoundationResponse::HTTP_NO_CONTENT);
     }
-
 }

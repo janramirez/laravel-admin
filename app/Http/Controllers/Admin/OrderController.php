@@ -6,13 +6,24 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\OrderResource;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Response;
 
 class OrderController
 {
+    /**
+     * @var UserService
+     */
+    private $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function index()
     {
-        Gate::authorize('view', 'orders');
+        $this->userService->allows('view', 'orders');
 
         $order = Order::paginate();
 
@@ -21,14 +32,14 @@ class OrderController
 
     public function show($id)
     {
-        Gate::authorize('view', 'orders');
+        $this->userService->allows('view', 'orders');
 
         return new OrderResource(Order::find($id));
     }
 
     public function export()
     {
-        Gate::authorize('view', 'orders');
+        $this->userService->allows('view', 'orders');
         
         $headers = [
             "Content-type" => "text/csv",
